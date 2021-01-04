@@ -1,14 +1,11 @@
 # -*- coding: UTF-8 -*-
 import requests as req
 import json,sys,time
-#先注册azure应用，确保应用有以下权限：
+#先注册Azure应用,确保应用有以下权限:
 #files:	Files.Read.All、Files.ReadWrite.All、Sites.Read.All、Sites.ReadWrite.All
 #user:	User.Read.All、User.ReadWrite.All、Directory.Read.All、Directory.ReadWrite.All
-#mail:  Mail.Read、Mail.ReadWrite、MailboxSettings.Read、MailboxSettings.ReadWrite
-#注册后一定要再点代表SSSS授予管理员同意,否则outlook api无法调用
-
-
-
+#mail:	Mail.Read、Mail.ReadWrite、MailboxSettings.Read、MailboxSettings.ReadWrite
+#注册后一定要再点代表 SSSS 授予管理员同意,否则Outlook API无法调用！
 
 
 
@@ -22,7 +19,7 @@ def gettoken(refresh_token):
           'refresh_token': refresh_token,
           'client_id':id,
           'client_secret':secret,
-          'redirect_uri':'http://localhost:53682'
+          'redirect_uri':'http://localhost:53682/'
          }
     html = req.post('https://login.microsoftonline.com/common/oauth2/v2.0/token',data=data,headers=headers)
     jsontxt = json.loads(html.text)
