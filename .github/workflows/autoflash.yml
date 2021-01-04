@@ -1,19 +1,19 @@
 #AutoFlah 加密版
 name: AUTO FLASH API
 
-on: 
+on:
   release:
     types: [published]
   push:
     tags:
     - 'v*'
-  #  branches: 
-  #    - master
+  #  branches:
+  #    - main
   schedule:
-    - cron: '12 */6 * * *'
+    - cron: '12 */3 * * *'
   watch:
     types: [started]
-   
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,31 +29,32 @@ jobs:
       run: |
         pip install requests
     - name: Read config from secrets  #读取机密
-      env: 
+      env:
         CONFIG_ID: ${{ secrets.CONFIG_ID }} # secrets_id 提供
         CONFIG_KEY: ${{ secrets.CONFIG_KEY }} # secrets_key 提供
-      run: | 
+      run: |
         cp 1.py 2.py
         echo $CONFIG_ID > configid.txt
         echo $CONFIG_KEY > configkey.txt
         sed -i '10 r configid.txt' 2.py
         sed -i '12 r configkey.txt' 2.py
-    - name: Test Api #Api调用
-      run: | 
+    - name: Test API #API调用
+      run: |
         echo `date +"%Y-%m-%d %H:%M:%S"` begin > time.log
         python 2.py
     - name: Delete secrets config #删除机密
-      run: | 
+      run: |
         rm -f 2.py
         rm -f configid.txt
-        rm -f configkey.txt    
+        rm -f configkey.txt
     - name: Commit #上传新的refresh_token到仓库
       run: |
-        git config --global user.email AutoupdateRobot@email.com
-        git config --global user.name AutoupdateRobot
+        git config --global user.email api@office.ssss.fun
+        git config --global user.name AutoFlash
         git add .
         git commit -m "update new refresh_token" -a
     - name: Push changes
       uses: E5DEV/github-push-action@main
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: main
